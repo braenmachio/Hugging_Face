@@ -1,6 +1,6 @@
 from smolagents.agent_types import AgentAudio, Agentimage, AgentText, handle_agent_output_types
 from smolagents.agents import ActionStep, MultiStepAgent
-from smolagents.memory import MemorySteps
+from smolagents.memory import MemoryStep
 from smolagents.utils import _is_package_available
 
 import mimetypes, os, re, shutil
@@ -14,7 +14,8 @@ def pull_messages_from_step(
 
     if isinstance(step_log, ActionStep):
         # Output the step number
-        step_number = f"Step {step_log.step_number}" if step_log.step_number is not None else "" yield gr.ChatMessage(role="assistant", content=f"**{step_number}**")
+        step_number = f"Step {step_log.step_number}" if step_log.step_number is not None else ""
+        yield gr.ChatMessage(role="assistant", content=f"**{step_number}**")
         # First yield the thought and reasoning from th eLLM
         if hasattr(step_log, "model_output") and step_log.model_output is not None:
             # Clean up the LLM output
@@ -208,7 +209,7 @@ def stream_to_gradio(agent, task:str, reset_agent_memory: bool = False, addition
                 text_input
                 + (
                     f"\nYou have been provided with these files, which mightbe helpful or not: {file_uploads_log}"
-                    if len{file_uploads_log) > 0
+                    if len(file_uploads_log) > 0
                     else ""
                     ),
                 "",
